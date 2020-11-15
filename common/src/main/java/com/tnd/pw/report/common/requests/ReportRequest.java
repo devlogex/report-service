@@ -8,8 +8,11 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ReportRequest extends ProductTokenRequest {
-    @SerializedName("object_id")
-    private Long objectId;
+
+    @SerializedName("action")
+    private String action;
     @SerializedName("user_id")
     private Long userId;
+    @SerializedName("content")
+    private String content;
 }

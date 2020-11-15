@@ -2,6 +2,8 @@ package com.tnd.pw.report.runner.config;
 
 import com.tnd.dbservice.sdk.api.DBServiceSdkClient;
 import com.tnd.dbservice.sdk.api.impl.DBServiceSdkClientImpl;
+import com.tnd.pw.config.sdk.ConfigServiceSdkClient;
+import com.tnd.pw.config.sdk.impl.ConfigServiceSdkClientImpl;
 import com.tnd.pw.report.dbservice.DataHelper;
 import com.tnd.pw.report.history.dao.HistoryDao;
 import com.tnd.pw.report.history.dao.impl.HistoryDaoImpl;
@@ -23,10 +25,19 @@ public class RunnerConfig {
     private String db_host;
     @Value("${db.port}")
     private String db_port;
+    @Value("${config.host}")
+    private String config_host;
+    @Value("${config.port}")
+    private String config_port;
 
     @Bean
     public DBServiceSdkClient dbServiceSdkClient() {
         return new DBServiceSdkClientImpl(db_host,Integer.parseInt(db_port), 1);
+    }
+
+    @Bean
+    public ConfigServiceSdkClient configServiceSdkClient() {
+        return new ConfigServiceSdkClientImpl(config_host,Integer.parseInt(config_port), 1);
     }
 
     @Bean

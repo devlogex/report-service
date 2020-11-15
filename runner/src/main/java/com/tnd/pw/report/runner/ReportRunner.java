@@ -19,6 +19,7 @@ public class ReportRunner {
         commonServer.register(SpringApplicationContext.getBean(ReportHandler.class));
 
         commonServer.initServlet(8006);
+        commonServer.initGrpc(9006);
         commonServer.startServer();
     }
 }

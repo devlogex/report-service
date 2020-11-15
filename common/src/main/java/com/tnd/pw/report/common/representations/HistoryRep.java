@@ -21,10 +21,12 @@ public class HistoryRep  implements Serializable {
     private Long updatedBy;
     @SerializedName("action")
     private String action;
-    @SerializedName("object_id")
+    @SerializedName("belong_id")
     private Long objectId;
     @SerializedName("user_id")
     private Long userId;
     @SerializedName("content")
     private String content;
+    @SerializedName("user")
+    private String user;
 }

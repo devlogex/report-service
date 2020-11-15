@@ -12,9 +12,8 @@
         <module>runner</module>
         <module>common</module>
         <module>dbservice</module>
-        <module>broker</module>
-        <module>worker</module>
         <module>history</module>
+        <module>sdk</module>
     </modules>
 
     <properties>
@@ -26,6 +25,7 @@
         <common.ioc.version>1.0-SNAPSHOT</common.ioc.version>
         <dbservice.version>1.0-SNAPSHOT</dbservice.version>
         <report.version>1.0-SNAPSHOT</report.version>
+        <config.service.version>1.0-SNAPSHOT</config.service.version>
         <lombok.version>1.18.12</lombok.version>
         <action.service.version>1.0-SNAPSHOT</action.service.version>
         <spring.kafka.version>2.6.1</spring.kafka.version>
@@ -121,43 +121,19 @@
             </dependency>
             <dependency>
                 <groupId>com.tnd.pw.report</groupId>
-                <artifactId>broker</artifactId>
+                <artifactId>history</artifactId>
                 <version>${report.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.tnd.pw.report</groupId>
-                <artifactId>history</artifactId>
-                <version>${report.version}</version>
+                <groupId>com.tnd.pw.config</groupId>
+                <artifactId>sdk</artifactId>
+                <version>${config.service.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>com.tnd.pw.action.runner.ActionRunner</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <finalName>report</finalName>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

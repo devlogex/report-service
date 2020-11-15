@@ -14,4 +14,7 @@ public class CsReportRepresentation implements Serializable {
 
     @SerializedName("list_history")
     private List<HistoryRep> historyReps;
+
+    @SerializedName("list_watcher")
+    private List<HistoryRep> watcherReps;
 }

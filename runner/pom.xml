@@ -50,6 +50,10 @@
             <groupId>com.tnd.pw.report</groupId>
             <artifactId>common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.tnd.pw.config</groupId>
+            <artifactId>sdk</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -68,13 +72,13 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>com.tnd.pw.config.runner.ConfigRunner</mainClass>
+                            <mainClass>com.tnd.pw.report.runner.ReportRunner</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <finalName>config-runner</finalName>
+                    <finalName>report-runner</finalName>
                 </configuration>
             </plugin>
 
