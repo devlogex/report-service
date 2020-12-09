@@ -8,9 +8,10 @@ import com.tnd.pw.config.sdk.ConfigServiceSdkClient;
 import com.tnd.pw.report.common.representations.CsReportRepresentation;
 import com.tnd.pw.report.common.requests.ReportRequest;
 import com.tnd.pw.report.common.utils.RepresentationBuilder;
-import com.tnd.pw.report.history.constants.HistoryType;
 import com.tnd.pw.report.history.entity.HistoryEntity;
+import com.tnd.pw.report.history.entity.WatcherEntity;
 import com.tnd.pw.report.history.exception.HistoryNotFoundException;
+import com.tnd.pw.report.history.exception.WatcherNotFoundException;
 import com.tnd.pw.report.history.service.HistoryService;
 import com.tnd.pw.report.runner.exception.ConfigServiceFailedException;
 import com.tnd.pw.report.runner.service.HistoryServiceHandler;
@@ -35,32 +36,18 @@ public class HistoryServiceHandlerImpl implements HistoryServiceHandler {
                         .objectId(request.getBelongId())
                         .userId(request.getUserId())
                         .content(request.getContent())
-                        .type(HistoryType.HISTORY.ordinal())
                         .build()
         );
     }
 
     @Override
     public void createWatcher(ReportRequest request) throws DBServiceException {
-        try {
-            historyService.getHistory(
-                    HistoryEntity.builder()
+            historyService.createWatcher(
+                    WatcherEntity.builder()
                             .objectId(request.getBelongId())
                             .userId(request.getUserId())
-                            .type(HistoryType.WATCHER.ordinal())
                             .build()
             );
-        } catch (HistoryNotFoundException e) {
-            historyService.createHistory(
-                    HistoryEntity.builder()
-                            .updatedAt(System.currentTimeMillis())
-                            .objectId(request.getBelongId())
-                            .userId(request.getUserId())
-                            .type(HistoryType.WATCHER.ordinal())
-                            .build()
-            );
-        }
-
     }
 
     @Override
@@ -72,7 +59,6 @@ public class HistoryServiceHandlerImpl implements HistoryServiceHandler {
                     HistoryEntity.builder()
                             .objectId(request.getBelongId())
                             .userId(request.getUserId())
-                            .type(HistoryType.HISTORY.ordinal())
                             .build()
             );
 
@@ -89,25 +75,24 @@ public class HistoryServiceHandlerImpl implements HistoryServiceHandler {
 
     @Override
     public CsReportRepresentation getWatcher(ReportRequest request) throws DBServiceException, ConfigServiceFailedException {
-        List<HistoryEntity> histories = null;
+        List<WatcherEntity> watchers = null;
         List<UserRepresentation> userProfiles = null;
         try {
-            histories = historyService.getHistory(
-                    HistoryEntity.builder()
+            watchers = historyService.getWatcher(
+                    WatcherEntity.builder()
                             .objectId(request.getBelongId())
                             .userId(request.getUserId())
-                            .type(HistoryType.WATCHER.ordinal())
                             .build()
             );
 
-            List<Long> userIds = histories.stream().map(history -> history.getUserId()).collect(Collectors.toList());
+            List<Long> userIds = watchers.stream().map(history -> history.getUserId()).collect(Collectors.toList());
             BaseResponse<CsUserRepresentation> response = configServiceSdkClient.getUserProfiles(userIds);
             if(response.getResponseCode() < 1) {
                 throw new ConfigServiceFailedException();
             }
             userProfiles = response.getData().getUserProfiles();
-        } catch (HistoryNotFoundException e) {
+        } catch (WatcherNotFoundException e) {
         }
-        return RepresentationBuilder.buildListWatcherReps(histories, userProfiles);
+        return RepresentationBuilder.buildListWatcherReps(watchers, userProfiles);
     }
 }

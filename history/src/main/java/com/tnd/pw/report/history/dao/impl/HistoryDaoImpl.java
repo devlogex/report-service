@@ -15,29 +15,25 @@ public class HistoryDaoImpl implements HistoryDao {
     private DataHelper dataHelper;
 
     private static final String SQL_CREATE =
-            "INSERT INTO history(id, updated_at, updated_by, action, object_id, user_id, content, type) " +
-                    "values(%d, %d, %d, '%s', %d, %d, '%s', %d)";
+            "INSERT INTO history(id, updated_at, updated_by, action, object_id, user_id, content) " +
+                    "values(%d, %d, %d, '%s', %d, %d, '%s')";
     private static final String SQL_SELECT_BY_OBJECT_ID =
             "SELECT * FROM history WHERE object_id = %d ORDER BY updated_at";
     private static final String SQL_SELECT_BY_USER_ID =
             "SELECT * FROM history WHERE user_id = %d ORDER BY updated_at";
-    private static final String SQL_SELECT_BY_TYPE_AND_OBJECT_ID =
-            "SELECT * FROM history WHERE type = %d AND object_id = %d ORDER BY updated_at";
 
 
     @Override
     public void create(HistoryEntity entity) throws DBServiceException {
         String query = String.format(SQL_CREATE, entity.getId(), entity.getUpdatedAt(), entity.getUpdatedBy(),
-                entity.getAction(), entity.getObjectId(), entity.getUserId(), entity.getContent(), entity.getType());
+                entity.getAction(), entity.getObjectId(), entity.getUserId(), entity.getContent());
         dataHelper.executeSQL(query);
     }
 
     @Override
     public List<HistoryEntity> get(HistoryEntity entity) throws DBServiceException, HistoryNotFoundException {
         String query = "";
-        if(entity.getType() != null && entity.getObjectId() != null) {
-            query = String.format(SQL_SELECT_BY_TYPE_AND_OBJECT_ID, entity.getType(), entity.getObjectId());
-        } else if(entity.getObjectId() != null) {
+        if(entity.getObjectId() != null) {
             query = String.format(SQL_SELECT_BY_OBJECT_ID, entity.getObjectId());
         } else if (entity.getUserId() != null) {
             query = String.format(SQL_SELECT_BY_USER_ID, entity.getUserId());

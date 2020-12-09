@@ -6,7 +6,9 @@ import com.tnd.pw.config.sdk.ConfigServiceSdkClient;
 import com.tnd.pw.config.sdk.impl.ConfigServiceSdkClientImpl;
 import com.tnd.pw.report.dbservice.DataHelper;
 import com.tnd.pw.report.history.dao.HistoryDao;
+import com.tnd.pw.report.history.dao.WatcherDao;
 import com.tnd.pw.report.history.dao.impl.HistoryDaoImpl;
+import com.tnd.pw.report.history.dao.impl.WatcherDaoImpl;
 import com.tnd.pw.report.history.service.HistoryService;
 import com.tnd.pw.report.history.service.impl.HistoryServiceImpl;
 import com.tnd.pw.report.runner.handler.HistoryHandler;
@@ -48,6 +50,11 @@ public class RunnerConfig {
     @Bean
     public HistoryDao historyDao() {
         return new HistoryDaoImpl();
+    }
+
+    @Bean
+    public WatcherDao watcherDao() {
+        return new WatcherDaoImpl();
     }
 
     @Bean
